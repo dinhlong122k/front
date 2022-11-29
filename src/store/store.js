@@ -9,7 +9,7 @@ const store = configureStore({
     cart: cartSlice.reducer,
     cartUi: cartUiSlice.reducer,
     // Categories: cateSlice.reducer
-    cate: CateReducer
+    categories: CateReducer
   },
 });
 
