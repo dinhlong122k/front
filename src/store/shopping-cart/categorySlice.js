@@ -1,47 +1,37 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const baseUrl = "http://localhost:8002/"
 
-// export const getCate = createAsyncThunk(
-//     'categorySlice/getCate',
-//     async(taskName) => {
-//         const response = await new Promise((resolve) =>
-//             setTimeout(() => resolve({data: taskName}) , 1000)
-//         );
-//         return response.data;
-//     }
-// );
+export const getCate = createAsyncThunk(
+    "categories/getCate",
+    async() =>{
+        const response = await axios.get(baseUrl + "category/1");
+        return response.data;
+    }
+)
 
-export const getCate = createAsyncThunk('category/getCate', async () => {
-    // console.log(response);
-    return axios
-            // .get("http://localhost:8002/category/1")
-            .get("https://jsonplaceholder.typicode.com/posts").then((res) => res.json())
-            // .then((response) => response.json())
-})
 
-export const cateSlice = createSlice({
-    // name: 'Categories',
-    name: 'posts',
+export const categorySlice = createSlice({
+    name: 'categories',
     initialState: {
-        posts: [],
-        loading: false
+        categories: [],
+        loading: 'idle'
+    },
+    reducers: {
     },
     extraReducers: {
-        [getCate.pending] : (state, action) => {
-            state.loading = true 
+        [getCate.pending] : (state) => {
+            state.loading = 'pending'
         },
         [getCate.fulfilled] : (state, action) => {
-            state.loading = false;
-            state.posts = action.payload
-            console.log(action.payload);
+            state.loading = 'success';
+            state.categories = action.payload;
         },
-        [getCate.rejected] : (state, action) => {
-            state.loading = false;
-        },
-    },
-});
+        [getCate.rejected] : (state) => {
+            state.loading ='failed';
+        }
+    }
+})
 
-// export default cateSlice.reducer;
-//export const {getCateById} = cateSlice.actions;
-export default cateSlice.reducer;
+export default categorySlice.reducer;
