@@ -6,7 +6,7 @@ const baseUrl = "http://localhost:8002/"
 export const getCate = createAsyncThunk(
     "categories/getCate",
     async() =>{
-        const response = await axios.get(baseUrl + "category/1");
+        const response = await axios.get("http://localhost:3000/categories");
         return response.data;
     }
 )

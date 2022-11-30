@@ -13,7 +13,7 @@ const Category = () => {
   //const categoryData = useSelector(getCate);
 
   const [count, setCount] = useState(0);
-  const categoryData = useSelector(state => state.categories)
+  const categoryData = useSelector(state => state.categories.categories);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -25,32 +25,18 @@ const Category = () => {
   }, [categoryData])
   
   return (
-    // <Container>
-    //   <Row>
-    //     {this.categoryData.map((item, index) => (
-    //       <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={index}>
-    //         <div className="category__item d-flex align-items-center gap-3">
-    //           <div className="category__img">
-    //             <img src={item.imgUrl} alt="category__item" />
-    //           </div>
-    //           <h6>{item.display}</h6>
-    //         </div>
-    //       </Col>
-    //     ))}
-    //   </Row>
-    // </Container>
-
     <Container>
       <Row>
-          <Col lg="3" md="4" sm="6" xs="6" className="mb-4">
+        {categoryData.map((item, index) => (
+          <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={index}>
             <div className="category__item d-flex align-items-center gap-3">
               <div className="category__img">
-                <img src={categoryData.imgUrl} alt="category__item" />
+                <img src={item.imgUrl} alt="category__item" />
               </div>
-              <h6>{categoryData.display}</h6>
+              <h6>{item.display}</h6>
             </div>
           </Col>
-
+        ))}
       </Row>
     </Container>
   );
