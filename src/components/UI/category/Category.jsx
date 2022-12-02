@@ -12,22 +12,22 @@ import "../../../styles/category.css";
 const Category = () => {
   //const categoryData = useSelector(getCate);
 
-  const [count, setCount] = useState(0);
+  // const [count, setCount] = useState(0);
   const categoryData = useSelector(state => state.categories.categories);
+  console.log(categoryData); 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getCate())
   }, [dispatch])
 
-  useEffect(() => { 
-    console.log(categoryData);
-  }, [categoryData])
+  // useEffect(() => { 
+  // }, [categoryData])
   
   return (
     <Container>
       <Row>
-        {categoryData.map((item, index) => (
+        {categoryData.map((item, index) => {
           <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={index}>
             <div className="category__item d-flex align-items-center gap-3">
               <div className="category__img">
@@ -36,7 +36,7 @@ const Category = () => {
               <h6>{item.display}</h6>
             </div>
           </Col>
-        ))}
+        })}
       </Row>
     </Container>
   );

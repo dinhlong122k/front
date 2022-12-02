@@ -1,13 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-
-const baseUrl = "http://localhost:8002/"
+import { act } from "react-dom/test-utils";
 
 export const getCate = createAsyncThunk(
     "categories/getCate",
     async() =>{
-        const response = await axios.get("http://localhost:3000/categories");
-        return response.data;
+        const response = await axios.get("http://localhost:8002/category");
+        // console.log(response.data);
+        return response.data.rows;
     }
 )
 
@@ -16,7 +16,8 @@ export const categorySlice = createSlice({
     name: 'categories',
     initialState: {
         categories: [],
-        loading: 'idle'
+        loading: 'idle',
+        size: 0,
     },
     reducers: {
     },
@@ -27,6 +28,8 @@ export const categorySlice = createSlice({
         [getCate.fulfilled] : (state, action) => {
             state.loading = 'success';
             state.categories = action.payload;
+            state.size = action.payload.count;
+            // console.log(state.categories);
         },
         [getCate.rejected] : (state) => {
             state.loading ='failed';
