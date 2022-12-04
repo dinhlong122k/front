@@ -5,38 +5,36 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 
 import { Container, Row, Col } from "reactstrap";
-import { getCate } from "../../../store/shopping-cart/categorySlice";
+import {
+  getCate,
+  selectCategories,
+} from "../../../store/shopping-cart/categorySlice";
 
 import "../../../styles/category.css";
 
 const Category = () => {
-  //const categoryData = useSelector(getCate);
-
-  // const [count, setCount] = useState(0);
-  const categoryData = useSelector(state => state.categories.categories);
-  console.log(categoryData); 
   const dispatch = useDispatch();
+  const categoryData = useSelector(selectCategories);
+  console.log(categoryData);
 
   useEffect(() => {
-    dispatch(getCate())
-  }, [dispatch])
+    dispatch(getCate());
+  }, []);
 
-  // useEffect(() => { 
-  // }, [categoryData])
-  
   return (
     <Container>
       <Row>
-        {categoryData.map((item, index) => {
-          <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={index}>
-            <div className="category__item d-flex align-items-center gap-3">
-              <div className="category__img">
-                <img src={item.imgUrl} alt="category__item" />
+        {categoryData.length > 0 &&
+          categoryData.map((item, index) => (
+            <Col lg="3" md="4" sm="6" xs="6" className="mb-4" key={index}>
+              <div className="category__item d-flex align-items-center gap-3">
+                <div className="category__img">
+                  <img src={item.imgUrl} alt="category__item" />
+                </div>
+                <h6>{item.display}</h6>
               </div>
-              <h6>{item.display}</h6>
-            </div>
-          </Col>
-        })}
+            </Col>
+          ))}
       </Row>
     </Container>
   );
