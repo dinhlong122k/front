@@ -5,16 +5,16 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
-
 import { Container, Row, Col } from "reactstrap";
-
 import products from "../assets/fake-data/products";
 import ProductCard from "../components/UI/product-card/ProductCard";
 import ReactPaginate from "react-paginate";
-
+import {
+  getProducts,
+  selectProducts,
+} from "../store/shopping-cart/productSlice";
 import "../styles/all-foods.css";
 import "../styles/pagination.css";
-import { getProducts } from "../store/shopping-cart/productSlice";
 
 const AllFoods = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -32,16 +32,13 @@ const AllFoods = () => {
     }
   });
 
-  const productsData = useSelector(state => state.products.products);
   const dispatch = useDispatch();
+  const productsData = useSelector(selectProducts);
+  // console.log(productsData.length);
 
   useEffect(() => {
-    dispatch(getProducts())
-  }, [])
-
-  // useEffect(() => { 
-  //   console.log(productsData);
-  // }, [productsData])
+    dispatch(getProducts());
+  }, []);
 
 
   const productPerPage = 12;
@@ -89,7 +86,7 @@ const AllFoods = () => {
               </div>
             </Col>
 
-            {productsData.map((item) => (
+            {productsData.length > 0 && productsData.map((item) => (
               <Col lg="3" md="4" sm="6" xs="6" key={item.id} className="mb-4">
                 <ProductCard item={item} />
               </Col>

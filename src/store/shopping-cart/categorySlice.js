@@ -11,16 +11,14 @@ export const getCate = createAsyncThunk(
     }
 )
 
-
+const initialState = {
+    categories: [],
+    loading: 'idle',
+    size: 0,
+}
 export const categorySlice = createSlice({
     name: 'categories',
-    initialState: {
-        categories: [],
-        loading: 'idle',
-        size: 0,
-    },
-    reducers: {
-    },
+    initialState,
     extraReducers: {
         [getCate.pending] : (state) => {
             state.loading = 'pending'
@@ -29,12 +27,13 @@ export const categorySlice = createSlice({
             state.loading = 'success';
             state.categories = action.payload;
             state.size = action.payload.count;
-            // console.log(state.categories);
         },
         [getCate.rejected] : (state) => {
             state.loading ='failed';
         }
     }
 })
+export const selectCategories = (state) => state.categories.categories;
+
 
 export default categorySlice.reducer;

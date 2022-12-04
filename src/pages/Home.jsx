@@ -1,33 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
+import { Col, Container, ListGroup, ListGroupItem, Row } from "reactstrap";
 import Helmet from "../components/Helmet/Helmet.js";
-import { Container, Row, Col, ListGroup, ListGroupItem } from "reactstrap";
-
 import heroImg from "../assets/images/hero.png";
 import "../styles/hero-section.css";
-
 import { Link } from "react-router-dom";
-
-import Category from "../components/UI/category/Category.jsx";
-
+import Category from "../components/UI/category/Category";
 import "../styles/home.css";
-
 import featureImg01 from "../assets/images/service-01.png";
 import featureImg02 from "../assets/images/service-02.png";
 import featureImg03 from "../assets/images/service-03.png";
-
 import products from "../assets/fake-data/products.js";
-
+import foodCategoryImg03 from "../assets/images/bread.png";
 import foodCategoryImg01 from "../assets/images/hamburger.png";
 import foodCategoryImg02 from "../assets/images/pizza.png";
-import foodCategoryImg03 from "../assets/images/bread.png";
-
 import ProductCard from "../components/UI/product-card/ProductCard.jsx";
-
 import whyImg from "../assets/images/location.png";
-
 import networkImg from "../assets/images/network.png";
-
 import TestimonialSlider from "../components/UI/slider/TestimonialSlider.jsx";
 
 const featureData = [
