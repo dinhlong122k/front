@@ -1,16 +1,26 @@
-import React, { useRef } from "react";
+import React from "react";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import { registerUser } from "../routes/apiRequest";
 const Register = () => {
-  const signupNameRef = useRef();
-  const signupPasswordRef = useRef();
-  const signupEmailRef = useRef();
+  const [fullname, setFullName] =useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const submitHandler = (e) => {
     e.preventDefault();
+    const register ={
+      fullName: fullname,
+      email: email,
+      password: password
+    }
+    registerUser(register, dispatch, navigate);
   };
 
   return (
@@ -26,7 +36,7 @@ const Register = () => {
                     type="text"
                     placeholder="Full name"
                     required
-                    ref={signupNameRef}
+                    onChange={(e) => setFullName(e.target.value)}
                   />
                 </div>
                 <div className="form__group">
@@ -34,7 +44,7 @@ const Register = () => {
                     type="email"
                     placeholder="Email"
                     required
-                    ref={signupEmailRef}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="form__group">
@@ -42,7 +52,7 @@ const Register = () => {
                     type="password"
                     placeholder="Password"
                     required
-                    ref={signupPasswordRef}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
                 <button type="submit" className="addTOCart__btn">

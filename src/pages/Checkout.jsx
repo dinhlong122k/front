@@ -5,6 +5,7 @@ import CommonSection from "../components/UI/common-section/CommonSection";
 import Helmet from "../components/Helmet/Helmet";
 
 import "../styles/checkout.css";
+import { selectCartItems } from "../store/shopping-cart/cartSlice";
 
 const Checkout = () => {
   const [enterName, setEnterName] = useState("");
@@ -16,6 +17,7 @@ const Checkout = () => {
 
   const shippingInfo = [];
   const cartTotalAmount = useSelector((state) => state.cart.totalAmount);
+  const cartItem = useSelector(selectCartItems);
   const shippingCost = 30;
 
   const totalAmount = cartTotalAmount + Number(shippingCost);
@@ -32,7 +34,10 @@ const Checkout = () => {
     };
 
     shippingInfo.push(userShippingAddress);
-    console.log(shippingInfo);
+    for(let i =0 ; i< cartItem.length; i++){
+      console.log(cartItem[i].title);
+      
+    }
   };
 
   return (

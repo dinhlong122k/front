@@ -2,15 +2,27 @@ import React, { useRef } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../routes/apiRequest";
+import { useState } from "react";
 
 const Login = () => {
-  const loginNameRef = useRef();
-  const loginPasswordRef = useRef();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const submitHandler = (e) => {
     e.preventDefault();
+    const newUser = {
+      email : email,
+      password: password
+    }
+    loginUser(newUser, dispatch, navigate);
   };
+
+  
 
   return (
     <Helmet title="Login">
@@ -25,7 +37,7 @@ const Login = () => {
                     type="email"
                     placeholder="Email"
                     required
-                    ref={loginNameRef}
+                    onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div className="form__group">
@@ -33,7 +45,7 @@ const Login = () => {
                     type="password"
                     placeholder="Password"
                     required
-                    ref={loginPasswordRef}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                 </div>
                 <button type="submit" className="addTOCart__btn">
