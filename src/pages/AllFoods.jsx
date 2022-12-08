@@ -11,21 +11,31 @@ import ProductCard from "../components/UI/product-card/ProductCard";
 import ReactPaginate from "react-paginate";
 import {
   getProducts,
+  selectPageNumber,
   selectProducts,
+  selectProductPerPage,
+  selectTotalPage,
 } from "../store/shopping-cart/productSlice";
 import "../styles/all-foods.css";
 import "../styles/pagination.css";
 
 const AllFoods = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchItem, setSearchItem] = useState("");
 
-  const [pageNumber, setPageNumber] = useState(0);
+  const [pageNumber, setPageNumber] = useState(1);
+  
+  const [pageSize, setPageSize] = useState(12);
+
+  const [properties, setProperties] = useState("");
+
+  const [orderby, setOrderBy] = useState("");
+  
 
   const searchedProduct = products.filter((item) => {
-    if (searchTerm.value === "") {
+    if (searchItem.value === "") {
       return item;
     }
-    if (item.title.toLowerCase().includes(searchTerm.toLowerCase())) {
+    if (item.title.toLowerCase().includes(searchItem.toLowerCase())) {
       return item;
     } else {
       return console.log("not found");
@@ -34,25 +44,62 @@ const AllFoods = () => {
 
   const dispatch = useDispatch();
   const productsData = useSelector(selectProducts);
-  // console.log(productsData.length);
+  const productNumberPage = useSelector(selectTotalPage);
+  // const productPerPage = useSelector(selectProductPerPage);
+  // // const productPageNumber = useSelector(selectPageNumber);
 
   useEffect(() => {
-    dispatch(getProducts());
+    setPageSize(pageSize);
+    setProperties("title");
+    setOrderBy("asc");
+    dispatch(getProducts({pageNumber: pageNumber, pageSize: pageSize, properties: properties, orderby: orderby, search : searchItem}));
   }, []);
 
-
-  const productPerPage = 12;
-  const visitedPage = pageNumber * productPerPage;
+  const visitedPage = pageNumber * pageSize;
   const displayPage = searchedProduct.slice(
     visitedPage,
-    visitedPage + productPerPage
+    visitedPage + pageSize
   );
 
-  const pageCount = Math.ceil(searchedProduct.length / productPerPage);
+  const pageCount = Math.ceil(productNumberPage / pageSize);
 
-  const changePage = ({ selected }) => {
+  const changePage = ({ selected }) => {  
     setPageNumber(selected);
+    dispatch(getProducts({pageNumber: selected + 1, pageSize: pageSize}));
   };
+
+  const searchProducts = (e) =>{
+    console.log(e);
+    dispatch(getProducts({pageNumber: pageNumber, pageSize: pageSize, properties: properties, orderby: orderby,search: e}))
+  }
+
+  const handleChange = (e) =>{
+    if(e.target.value === 'default'){
+      dispatch(getProducts({pageNumber: pageNumber, pageSize: pageSize, properties: properties, orderby: orderby}));
+      setProperties("");
+      setOrderBy("");
+    }
+    if(e.target.value === 'ascending'){
+      setProperties("title");
+      setOrderBy("asc");
+      dispatch(getProducts({pageNumber: pageNumber, pageSize: pageSize, properties: "title", orderby: "asc"}));
+    }
+    if(e.target.value === 'descending'){
+      setProperties("title");
+      setOrderBy("desc");
+      dispatch(getProducts({pageNumber: pageNumber, pageSize: pageSize, properties: "title", orderby: "desc"}));
+    }
+    if(e.target.value === 'high-price'){
+      setProperties("price");
+      setOrderBy("desc");
+      dispatch(getProducts({pageNumber: pageNumber, pageSize: pageSize, properties: "price", orderby: "desc"}));
+    }
+    if(e.target.value === 'low-price'){
+      setProperties("price");
+      setOrderBy("asc");
+      dispatch(getProducts({pageNumber: pageNumber, pageSize: pageSize, properties: "price", orderby: "asc"}));
+    }
+  }
 
   return (
     <Helmet title="All-Foods">
@@ -66,18 +113,18 @@ const AllFoods = () => {
                 <input
                   type="text" style={{width: "100%", backgroundColor: "transparent"}}
                   placeholder="I'm looking for...."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  value={searchItem}
+                  onChange={(e) => setSearchItem(e.target.value)}
                 />
                 <span>
-                  <i className="ri-search-line"></i>
+                  <i className="ri-search-line" onClick={(e) => searchProducts(searchItem)}></i>
                 </span>
               </div>
             </Col>
             <Col lg="6" md="6" sm="6" xs="12" className="mb-5">
               <div className="sorting__widget text-end">
-                <select className="w-50">
-                  <option>Default</option>
+                <select onChange={handleChange} className="w-50">
+                  <option value="default">Default</option>
                   <option value="ascending">Alphabetically, A-Z</option>
                   <option value="descending">Alphabetically, Z-A</option>
                   <option value="high-price">High Price</option>
@@ -98,7 +145,11 @@ const AllFoods = () => {
                 onPageChange={changePage}
                 previousLabel={"Prev"}
                 nextLabel={"Next"}
-                containerClassName=" paginationBttns "
+                containerClassName=" paginationBttns"
+                marginPagesDisplayed={1}
+                pageRangeDisplayed={1}
+                disableInitialCallback={true}
+                initialPage={1}
               />
             </div>
           </Row>
