@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import Helmet from "../components/Helmet/Helmet";
 import CommonSection from "../components/UI/common-section/CommonSection";
 import { Container, Row, Col } from "reactstrap";
@@ -6,12 +6,23 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginUser } from "../routes/apiRequest";
 import { useState } from "react";
+import { loginThunk } from "../store/features/authSlice";
+import { useSelector } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const accessToken = useSelector((state) => state.auth.accessToken);
+
+  useEffect(() => {
+    if (accessToken) {
+      navigate("/home");
+    } else {
+      navigate("/login");
+    }
+  }, [accessToken, navigate]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -19,10 +30,8 @@ const Login = () => {
       email : email,
       password: password
     }
-    loginUser(newUser, dispatch, navigate);
+    dispatch(loginThunk(newUser));
   };
-
-  
 
   return (
     <Helmet title="Login">

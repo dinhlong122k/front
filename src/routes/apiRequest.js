@@ -12,6 +12,7 @@ export const loginUser = async(user, dispatch, navigate) =>{
     } catch (error) {
         dispatch(loginFailed());
     }
+    // nhu cc
 };
 
 export const registerUser = async(user, dispatch, navigate) =>{
