@@ -53,7 +53,7 @@ export const {
     registerFailed,
     registerStart,
     registerSuccess
-} =auth.actions
+} = auth.actions
 
 
 export default auth.reducer;

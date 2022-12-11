@@ -1,11 +1,11 @@
 import axios from "axios";
+import { api_login } from "../api/client";
 
 const axiosClient = axios.create({
-  baseURL: "http://localhost:8002/",
+  baseURL: api_login,
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
 });
 axiosClient.interceptors.request.use((request) => {
   const accessToken = localStorage.getItem('accessToken');

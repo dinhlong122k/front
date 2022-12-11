@@ -1,5 +1,4 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from "@reduxjs/toolkit";
 
 const items =
   localStorage.getItem("cartItems") !== null
@@ -77,7 +76,7 @@ const cartSlice = createSlice({
         state.totalQuantity
       );
 
-      Checkout()
+      // Checkout()
     },
 
     // ========= remove item ========
@@ -133,4 +132,4 @@ const cartSlice = createSlice({
 
 export const selectCartItems = (state) => state.cart.cartItems;
 export const cartActions = cartSlice.actions;
-export default cartSlice;
+export default cartSlice.reducer;
